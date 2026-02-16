@@ -3,57 +3,61 @@ import theme from '../theme';
 
 function UserTile({ user }) {
   const [showInfo, setShowInfo] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const cardStyle = {
-    ...theme.styles.card,
-    transform: isHovered ? 'translateY(-4px)' : 'none',
-    boxShadow: isHovered ? theme.shadows.lg : theme.shadows.sm,
-  };
-
-  const btnStyle = {
-    ...theme.styles.btn,
-    width: '100%',
-    backgroundColor: showInfo ? theme.colors.primary : 'transparent',
-    color: showInfo ? 'white' : theme.colors.textMain,
-    borderColor: showInfo ? theme.colors.primary : theme.colors.border,
-  };
 
   return (
-    <div 
-      style={{ ...cardStyle }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <h3 style={{ color: theme.colors.textMain, marginBottom: '0.5rem', fontSize: '1.125rem', fontWeight: 700 }}>{user.name}</h3>
-      <p style={{ color: theme.colors.textMuted, marginBottom: '1.5rem', fontSize: '0.9rem' }}>@{user.username}</p>
+    <div className="card">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
+        <div style={{ 
+          width: '48px', 
+          height: '48px', 
+          backgroundColor: '#eef2ff', 
+          color: theme.colors.primary,
+          borderRadius: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '1.25rem',
+          fontWeight: 'bold'
+        }}>
+          {user.name ? user.name.charAt(0) : '?'}
+        </div>
+        <div>
+          <h3 className="card-title" style={{ margin: 0 }}>{user.name}</h3>
+          <p className="card-info" style={{ margin: 0 }}>@{user.username}</p>
+        </div>
+      </div>
 
       <button
         onClick={() => setShowInfo(!showInfo)}
-        style={btnStyle}
-        onMouseOver={(e) => {
-          if (!showInfo) e.target.style.backgroundColor = '#f1f5f9';
-        }}
-        onMouseOut={(e) => {
-          if (!showInfo) e.target.style.backgroundColor = 'transparent';
-        }}
+        className={`btn ${showInfo ? 'btn-primary' : 'btn-outline'}`}
+        style={{ width: '100%' }}
       >
         {showInfo ? "Hide Details" : "Show Details"}
       </button>
 
       {showInfo && (
-        <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: `1px solid ${theme.colors.border}`, fontSize: '0.9rem' }}>
-          <div style={{ display: 'flex', marginBottom: '0.5rem' }}>
-            <span style={{ fontWeight: 600, width: '60px' }}>Email:</span>
-            <span style={{ color: theme.colors.textMuted }}>{user.email}</span>
+        <div className="details" style={{ animation: 'fadeIn 0.2s ease-out' }}>
+          <style>{`
+            @keyframes fadeIn {
+              from { opacity: 0; transform: translateY(-10px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
+          <div className="detail-row">
+            <span className="detail-label">Email</span>
+            <span className="detail-value">{user.email}</span>
           </div>
-          <div style={{ display: 'flex', marginBottom: '0.5rem' }}>
-            <span style={{ fontWeight: 600, width: '60px' }}>Phone:</span>
-            <span style={{ color: theme.colors.textMuted }}>{user.phone}</span>
+          <div className="detail-row">
+            <span className="detail-label">Phone</span>
+            <span className="detail-value">{user.phone}</span>
           </div>
-          <div style={{ display: 'flex' }}>
-            <span style={{ fontWeight: 600, width: '60px' }}>Web:</span>
-            <span style={{ color: theme.colors.primary }}>{user.website}</span>
+          <div className="detail-row">
+            <span className="detail-label">Website</span>
+            <span className="detail-value" style={{ color: theme.colors.primary, fontWeight: 500 }}>{user.website}</span>
+          </div>
+          <div className="detail-row">
+            <span className="detail-label">Company</span>
+            <span className="detail-value">{user.company?.name}</span>
           </div>
         </div>
       )}

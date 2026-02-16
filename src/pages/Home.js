@@ -25,22 +25,47 @@ function Home() {
   }, []);
 
   return (
-    <div style={{ ...theme.styles.pageContainer, backgroundColor: theme.colors.bgMain, minHeight: '100vh' }}>
-      <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <h2 style={{ fontSize: '2.5rem', fontWeight: 800, color: theme.colors.textMain, marginBottom: '0.5rem' }}>Welcome to StudentInfo</h2>
-        <p style={{ color: theme.colors.textMuted, fontSize: '1.1rem' }}>A centralized dashboard to manage and view student information.</p>
+    <div className="main-content">
+      <div className="page-header" style={{ textAlign: 'center' }}>
+        <h2 className="section-title">Academic Dashboard</h2>
+        <p className="section-subtitle">Real-time overview of student registrations and system status.</p>
       </div>
 
       <div style={{ marginTop: '20px' }}>
         {loading && (
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '4rem' }}>
-            <div style={{ width: '40px', height: '40px', border: `4px solid ${theme.colors.border}`, borderTopColor: theme.colors.primary, borderRadius: '50%' }}></div>
-            <p style={{ marginTop: '1rem', color: theme.colors.textMuted }}>Loading student data...</p>
+            <div style={{ 
+              width: '40px', 
+              height: '40px', 
+              border: `4px solid ${theme.colors.border}`, 
+              borderTopColor: theme.colors.primary, 
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite'
+            }}></div>
+            <style>{`
+              @keyframes spin {
+                to { transform: rotate(360deg); }
+              }
+            `}</style>
+            <p style={{ marginTop: '1rem', color: theme.colors.textMuted }}>Syncing database...</p>
           </div>
         )}
-        {error && <p style={{ color: '#ef4444', textAlign: 'center', padding: '1rem', backgroundColor: '#fef2f2', borderRadius: '8px', border: '1px solid #fee2e2' }}>{error}</p>}
+        {error && (
+          <div style={{ 
+            color: '#ef4444', 
+            textAlign: 'center', 
+            padding: '2rem', 
+            backgroundColor: '#fef2f2', 
+            borderRadius: '12px', 
+            border: '1px solid #fee2e2',
+            maxWidth: '500px',
+            margin: '0 auto'
+          }}>
+            <p style={{ fontWeight: 600 }}>{error}</p>
+          </div>
+        )}
         {!loading && !error && (
-          <div style={{ ...theme.styles.grid }}>
+          <div className="card-grid">
             {students.map((user) => (
               <UserTile key={user.id} user={user} />
             ))}
